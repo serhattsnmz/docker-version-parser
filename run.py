@@ -36,23 +36,23 @@ for i in range(1, TOTAL_PAGE + 1):
     
     for item in r.json().get("results"):
         
-        if FILTER_NAMES_EX and any([k in item.get("name") for k in FILTER_NAMES_EX]):
+        if FILTER_NAMES_EX and any(k in item.get("name") for k in FILTER_NAMES_EX):
             continue
-        
-        if FILTER_NAMES_IN and not any([k in item.get("name") for k in FILTER_NAMES_IN]):
+
+        if FILTER_NAMES_IN and not any(k in item.get("name") for k in FILTER_NAMES_IN):
             continue
-        
-        if FILTER_OS and not any([k["os"] == FILTER_OS for k in item.get("images")]):
+
+        if FILTER_OS and not any(k["os"] == FILTER_OS for k in item.get("images")):
             continue
-        
-        if FILTER_ARCH and not any([k["architecture"] == FILTER_ARCH for k in item.get("images")]):
+
+        if FILTER_ARCH and not any(k["architecture"] == FILTER_ARCH for k in item.get("images")):
             continue
         
         table.append([
             item.get("last_updated")[:10],
             item.get("name"),
-            ",".join(set(k.get("os") for k in item.get("images"))),
-            ",".join(set(k.get("architecture") for k in item.get("images"))),
+            ",".join({k.get("os") for k in item.get("images")}),
+            ",".join({k.get("architecture") for k in item.get("images")}),
         ])
     
 if ORDER_BY_NAME:
